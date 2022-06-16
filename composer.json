@@ -1,0 +1,19 @@
+{
+    "name": "ilejohn-official/product-inventory",
+    "description": "A simple product inventory app",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Opeyemi Ilesanmi",
+            "email": "ojilesanmi7@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+          "App\\":"src/"
+        }
+    },
+    "require": {
+        "php": ">=7"
+    }
+}
