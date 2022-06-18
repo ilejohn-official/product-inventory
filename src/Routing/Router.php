@@ -15,7 +15,7 @@ class Router
     private $request;
     private $requestVarName = 'request';
 
-        /**
+    /**
      * Run the router
      *
      * @return void
@@ -29,6 +29,7 @@ class Router
                 // Exception
                 http_response_code(404);
                 header("HTTP/1.0 404 Not Found");
+                
                 return $this->showErrorPage();
                 //throw new \Exception('404 Not Found');
                 exit();
@@ -129,9 +130,8 @@ class Router
      */
     public function checkHttpMethod(): bool
     {
-
         if($this->requestMethod() == 'POST')
-            $this->httpMethod = (isset($_POST['_method']) && in_array($_POST['_method'], $this->acceptedHttpMethods)) ? $_POST['_method'] : 'post';
+            $this->httpMethod = (isset($_POST['_method']) && in_array($_POST['_method'], $this->acceptedRequestMethods)) ? $_POST['_method'] : 'post';
 
         if(!$this->route)
             return false;
@@ -164,6 +164,7 @@ class Router
 
         $route['segments'] = $args;
         
+        
         if($routeName == $route['path'] )
         {
             if(!isset($this->routeList[$this->httpMethod]) || !array_key_exists($this->request_path(), $this->routeList[$this->httpMethod]))
@@ -171,8 +172,6 @@ class Router
                 $this->route = $route;
             }
         }
-
-        $this->route = $route;
 
         // Inserting in the route list
         $this->routeList[$route['http_method']][$route['path']] = $route;

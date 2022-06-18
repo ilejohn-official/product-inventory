@@ -8,7 +8,7 @@
 </head>
 <body>
     <center>
-        <h1>Oops! Something went wrong</h1>
+        <h1>Oops! Page not found</h1>
     </center>
    
 </body>
