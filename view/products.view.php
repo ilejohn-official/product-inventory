@@ -9,6 +9,10 @@
 <body>
     <center>
         <h1> Welcome to the first page</h1>
+
+        <div>
+          <?php echo count($products); ?>
+        </div>
     </center>
    
 </body>

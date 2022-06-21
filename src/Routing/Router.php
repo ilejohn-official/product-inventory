@@ -37,9 +37,13 @@ class Router
                 return $this->showErrorPage();
             }
 
-            return call_user_func_array($this->routeCollection[$key]['callable'],[$this->request]);
+            $classObject = $this->routeCollection[$key]['callable'][0];
+            $method = $this->routeCollection[$key]['callable'][1];
+
+            return call_user_func_array([$classObject, $method],[$this->request]);
             
         } catch (\Throwable $th) {
+            //throw $th;
             return $this->showErrorPage();
         }
     }
