@@ -8,6 +8,12 @@ abstract class Model
 {
     public function __construct(private DatabaseInterface $db)
     {
+        $this->db->setTable(self::getTableName());
+    }
+
+    public static final function getTableName()
+    {
+        return static::$table;
     }
 
     public function get() 

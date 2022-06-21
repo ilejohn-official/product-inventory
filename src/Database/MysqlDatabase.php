@@ -3,20 +3,19 @@
 namespace App\Database;
 
 use App\Interface\DatabaseInterface;
-
-
-
+use \PDO as Pdo;
 class MysqlDatabase implements DatabaseInterface
 {
 
     protected $pdo = null;
     protected $host;
-    protected $dbName;
-    protected $username;
-    protected $password;
+    protected string $dbName;
+    protected string $username;
+    protected string $password;
+    protected string $table;
     protected $config = [];
 
-    public function __construct(private string $table)
+    public function __construct()
     {
         $config = require __DIR__."../../../config/db.php";
 
@@ -27,16 +26,16 @@ class MysqlDatabase implements DatabaseInterface
         $this->config = $config;
     }
 
-    public function connect() : \PDO 
+    public function connect() : Pdo 
     {
         $opt  = array(
-            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            \PDO::ATTR_EMULATE_PREPARES   => FALSE,
+            Pdo::ATTR_ERRMODE            => Pdo::ERRMODE_EXCEPTION,
+            Pdo::ATTR_DEFAULT_FETCH_MODE => Pdo::FETCH_OBJ,
+            Pdo::ATTR_EMULATE_PREPARES   => FALSE,
         );
 
         if (!isset($this->pdo)) {
-         $this->pdo = new \PDO('mysql:host='.$this->host.';dbname='.$this->dbName.';charset='.$this->config['charset'],
+         $this->pdo = new Pdo('mysql:host='.$this->host.';dbname='.$this->dbName.';charset='.$this->config['charset'],
            $this->username, 
            $this->password,
            $opt
@@ -44,6 +43,11 @@ class MysqlDatabase implements DatabaseInterface
         }
 
         return $this->pdo;
+    }
+
+    public function setTable(string $table) : void
+    {
+        $this->table = $table;
     }
 
     public function query(string $query, array $params = null) 

@@ -6,6 +6,8 @@ interface DatabaseInterface
 {
     public function connect();
 
+    public function setTable(string $table);
+
     public function query(string $query, array $params);
 
     public function getAll();

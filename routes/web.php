@@ -7,9 +7,13 @@ use App\Service\ProductService;
 use App\Model\Product;
 use App\Database\MysqlDatabase;
 
-$router = new Router(new Request());
+$request = new Request();
+$router = new Router($request);
 
-$controller = new ProductController(new ProductService(new Product(new MysqlDatabase(Product::$table))));
+$db = new MysqlDatabase();
+$model = new Product($db);
+$service = new ProductService($model);
+$controller = new ProductController($service);
 
 $router->get('/', [$controller, 'show']);
 
