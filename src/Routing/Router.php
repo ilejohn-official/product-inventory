@@ -3,11 +3,10 @@
 namespace App\Routing;
 
 use App\Interface\RequestInterface;
+use App\Interface\RouteCollectionInterface;
 
 class Router
 {
-    private $acceptedRequestMethods = ['GET', 'POST', 'PUT', 'DELETE'];
-    private $routeCollection = [];
 
     public function __construct(private RequestInterface $request)
     {
@@ -19,15 +18,17 @@ class Router
      *
      * @return void
      */
-    public function process()
+    public function __invoke(RouteCollectionInterface $routes)
     {
+        $routeCollection = $routes->getRoutes();
+
         try {
             $key = array_search(true, array_map(function($item){
                 return ( 
                     $item['path'] == $this->requestPath() && 
                     $item['httpMethod'] == $this->requestMethod()
                 );
-             }, $this->routeCollection)
+             }, $routeCollection)
             );
 
             if($key === false) {
@@ -37,10 +38,7 @@ class Router
                 return $this->showErrorPage();
             }
 
-            $classObject = $this->routeCollection[$key]['callable'][0];
-            $method = $this->routeCollection[$key]['callable'][1];
-
-            return call_user_func_array([$classObject, $method],[$this->request]);
+            return call_user_func_array($routeCollection[$key]['callable'],[$this->request]);
             
         } catch (\Throwable $th) {
             //throw $th;
@@ -75,72 +73,5 @@ class Router
     private function requestPath() : string
     {
         return $this->request->getUri();
-    }
-
-    private function registerRoute(string $httpMethod, string $uri, callable $controllerMethod) 
-    {
-        $key = array_search(true, array_map(function($item) use ($uri, $httpMethod){
-            return $item['path'] === $uri && $item['httpMethod'] === $httpMethod;
-         }, $this->routeCollection)
-        );
-
-        if (
-            in_array($httpMethod, $this->acceptedRequestMethods) && 
-            is_callable($controllerMethod) &&
-            $key === false) {
-          array_push($this->routeCollection, [
-              'path' => $uri,
-              'httpMethod' => $httpMethod ,
-              'callable' => $controllerMethod
-          ]);
-        }
-    }
-
-    /**
-     * GET route
-     *
-     * @param string $path
-     * @param callable $controllerMethod
-     * @return void
-     */
-    public function get(string $path, callable $controllerMethod) : void
-    {
-        $this->registerRoute('GET', $path, $controllerMethod);
-    }
-
-    /**
-     * POST route
-     *
-     * @param string $path
-     * @param callable $controllerMethod
-     * @return void
-     */
-    public function post(string $path, callable $controllerMethod) : void
-    {
-        $this->registerRoute('POST', $path, $controllerMethod);
-    }
-
-    /**
-     * PUT route
-     *
-     * @param string $path
-     * @param callable $controllerMethod
-     * @return void
-     */
-    public function put(string $path, callable $controllerMethod) : void
-    {
-        $this->registerRoute('PUT', $path, $controllerMethod);
-    }
-
-    /**
-     * DELETE route
-     *
-     * @param string $path
-     * @param callable $controllerMethod
-     * @return void
-     */
-    public function delete(string $path, callable $controllerMethod) : void
-    {
-        $this->registerRoute('DELETE', $path, $controllerMethod);
     }
 }

@@ -7,13 +7,13 @@ use \PDO as Pdo;
 class MysqlDatabase implements DatabaseInterface
 {
 
-    protected $pdo = null;
-    protected $host;
+    protected Pdo $pdo;
+    protected string $host;
     protected string $dbName;
     protected string $username;
     protected string $password;
     protected string $table;
-    protected $config = [];
+    protected array $config;
 
     public function __construct()
     {
