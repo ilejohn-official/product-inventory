@@ -8,22 +8,16 @@ class MysqlDatabase implements DatabaseInterface
 {
 
     protected Pdo $pdo;
-    protected string $host;
-    protected string $dbName;
-    protected string $username;
-    protected string $password;
     protected string $table;
-    protected array $config;
 
-    public function __construct()
+    public function __construct(
+        private string $host,
+        private string $dbName,
+        private string $username,
+        private string $password,
+        private string $charset
+    )
     {
-        $config = require __DIR__."../../../config/db.php";
-
-        $this->host = $config['host'];
-        $this->dbName = $config['database'];
-        $this->username = $config['username'];
-        $this->password = $config['password'];
-        $this->config = $config;
     }
 
     public function connect() : Pdo 
@@ -35,7 +29,7 @@ class MysqlDatabase implements DatabaseInterface
         );
 
         if (!isset($this->pdo)) {
-         $this->pdo = new Pdo('mysql:host='.$this->host.';dbname='.$this->dbName.';charset='.$this->config['charset'],
+         $this->pdo = new Pdo('mysql:host='.$this->host.';dbname='.$this->dbName.';charset='.$this->charset,
            $this->username, 
            $this->password,
            $opt

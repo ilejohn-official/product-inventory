@@ -16,9 +16,9 @@ class Router
     /**
      * Process the router
      *
-     * @return void
+     * @return callable
      */
-    public function __invoke(RouteCollectionInterface $routes)
+    public function __invoke(RouteCollectionInterface $routes) : callable
     {
         $routeCollection = $routes->getRoutes();
 
@@ -37,8 +37,8 @@ class Router
                 
                 return $this->showErrorPage();
             }
-
-            return call_user_func_array($routeCollection[$key]['callable'],[$this->request]);
+            
+            return $routeCollection[$key]['callable'];
             
         } catch (\Throwable $th) {
             //throw $th;

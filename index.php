@@ -3,12 +3,11 @@
 require __DIR__.'/vendor/autoload.php';
 
 use App\Routing\Router;
-use App\Request\Request;
 
-$route = require __DIR__.'/routes/web.php';
+$injector = require_once __DIR__.'/bootstrap/app.php';
 
+$response = $injector->make(Router::class)(
+    require_once __DIR__.'/routes/web.php'
+);
 
-$request = new Request();
-$router = new Router($request);
-
-$router($route);
+$injector->invoke($response);
