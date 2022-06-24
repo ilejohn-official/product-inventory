@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Interface\RequestInterface;
 use App\Interface\ProductServiceInterface;
+use App\Request\CreateProductRequest;
 
 class ProductController 
 {
@@ -27,10 +28,11 @@ class ProductController
     require_once  __DIR__.'../../../view/add_products.view.php';
   }
 
-  public function store(RequestInterface $request)
+  public function store(CreateProductRequest $request)
   {
+    $request->validate();
 
-    $body = $request->getBody();
+    $body = $request->getValidated();
 
     $param = [
       'sku' => $body['sku'],
@@ -38,7 +40,8 @@ class ProductController
       'price' => $body['price'],
       'attribute' => json_encode([
         'key' => $body['attribute_key'],
-        'value' => $body['attribute_value']
+        'value' => $body['attribute_value'],
+        'unit' => $body['attribute_unit']
       ])
     ];
 
@@ -48,7 +51,7 @@ class ProductController
     echo json_encode([
       'status' => 200,
       'message' => 'Successful',
-      'data' => $request->getBody()
+      'data' => $output
     ]);
   }
 }

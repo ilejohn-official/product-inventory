@@ -61,7 +61,10 @@ class MysqlDatabase implements DatabaseInterface
 
     public function store(array $param)
     {
-        return $this->query("INSERT INTO $this->table ".$this->getArrayKeys($param)." VALUES ".$this->arrayToWildCard($params), $params);
+        return $this->query(
+            "INSERT INTO $this->table ".$this->getArrayKeys($param)." VALUES ".$this->arrayToWildCard($param),
+             $this->arrayValueParams($param)
+        );
     }
 
     public function delete(array $ids)
@@ -79,6 +82,11 @@ class MysqlDatabase implements DatabaseInterface
     private function getArrayKeys(array $param): string
     {
         return "(".implode(',', array_keys($param)).")";
+    }
+
+    private function arrayValueParams(array $param) : array
+    {
+        return array_values($param);
     }
 
 }

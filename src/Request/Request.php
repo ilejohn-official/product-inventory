@@ -61,7 +61,7 @@ class Request implements RequestInterface
      */
     private function requestUri() : string
     {
-        return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        return htmlspecialchars(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     }
 
     /**
@@ -111,7 +111,7 @@ class Request implements RequestInterface
      */
     public function setQuery(array $body) : void
     {
-         $this->query = $query;
+         $this->query = $body;
     }
 
     /**
@@ -131,7 +131,7 @@ class Request implements RequestInterface
      */
     public function getUri() : string
     {
-        return $this->requestUri;
+        return htmlspecialchars($this->requestUri);
     }
 
      /**

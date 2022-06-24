@@ -9,6 +9,7 @@ use App\Database\MysqlDatabase;
 use App\Service\ProductService;
 use App\Routing\RouteCollection;
 use App\Request\Request;
+use App\Request\CreateProductRequest;
 
 [
 'host' => $host, 
@@ -18,7 +19,7 @@ use App\Request\Request;
 'charset'=>$charset
 ] = require __DIR__."../../config/db.php";
 
-return [
+ return [
     ProductServiceInterface::class => ProductService::class,
     RouteCollectionInterface::class => RouteCollection::class,
     Model::class => Product::class,
@@ -26,5 +27,5 @@ return [
     DatabaseInterface::class => [
         'class' => MysqlDatabase::class,
         '__construct()' => [$host, $dbName, $username, $password, $charset]
-    ],
+    ]
 ];
