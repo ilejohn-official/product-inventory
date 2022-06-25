@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Interface\RequestInterface;
 use App\Interface\ProductServiceInterface;
 use App\Request\CreateProductRequest;
+use App\Request\DeleteProductRequest;
 
 class ProductController 
 {
@@ -19,7 +20,7 @@ class ProductController
   {
     $products = $this->productService->getAllProducts();
     
-    require_once  __DIR__.'../../../view/products.view.php';
+    require_once  __DIR__.'../../../view/products.view.html';
   }
 
   public function showStoreForm()
@@ -45,13 +46,42 @@ class ProductController
       ])
     ];
 
-    $output = $this->productService->storeProduct($param);
+    try {
+      $output = $this->productService->storeProduct($param);
+    } catch (\Throwable $th) {
+      header('Content-Type: application/json; charset=utf-8', TRUE, 406);
+      echo json_encode([
+        'status_code' => 406,
+        'status' => false,
+        'message' => strpos($th->getMessage(), 'Duplicate entry') ? 'Sku must be unique. choose another' : 'Failed',
+        'data' => null
+      ]);
+      die;
+    } 
 
-    header('Content-Type: application/json; charset=utf-8');
+    header('Content-Type: application/json; charset=utf-8', TRUE, 200);
     echo json_encode([
-      'status' => 200,
+      'status_code' => 200,
+      'status' => true,
       'message' => 'Successful',
       'data' => $output
+    ]);
+  }
+
+  public function delete(DeleteProductRequest $request)
+  {
+    $request->validate();
+
+    $body = $request->getValidated();
+
+    $this->productService->deleteProducts($body['ids']);
+
+    header('Content-Type: application/json; charset=utf-8', TRUE, 200);
+    echo json_encode([
+      'status_code' => 200,
+      'status' => true,
+      'message' => 'Successful',
+      'data' => null
     ]);
   }
 }

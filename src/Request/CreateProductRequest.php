@@ -8,14 +8,6 @@ class CreateProductRequest extends Request
 {
    use Validators;
 
-   private array $data;
-
-   private array $errors = [];
-
-   private array $rules;
-
-   private bool $hasErrors = false;
-
    public function __construct()
    {
        parent::__construct();
@@ -42,8 +34,9 @@ class CreateProductRequest extends Request
        $this->validateBody();
 
        if ($this->hasErrors){
+        header('Content-Type: application/json; charset=utf-8', TRUE, 406);
          echo json_encode([
-            'status_code' => 422,
+            'status_code' => 406,
             'status' => false,
             'message' => 'Error',
             'data' => $this->getError()
@@ -63,27 +56,6 @@ class CreateProductRequest extends Request
 
      $this->validateString();
      $this->validateNumber();
-   }
-
-   public function hasError() : bool
-   {
-       return $this->hasErrors;
-   }
-
-   public function getError(string $key = null) : array|string|null
-   {
-     return is_null($key) ? $this->errors : (
-          array_key_exists($key, $this->errors) ? $this->errors[$key] : null
-     );
-   }
-
-   private function setError(string $key, string $message) : void
-   {
-     array_key_exists($key, $this->errors)
-                    ? $this->errors[$key] .= ". ". $message
-                    : $this->errors[$key] = $message;
-
-     $this->hasErrors = true;
    }
 
    private function validateRequired() : void

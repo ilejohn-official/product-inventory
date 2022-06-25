@@ -69,9 +69,12 @@ class MysqlDatabase implements DatabaseInterface
 
     public function delete(array $ids)
     {
-        $ids = array_map([$this->connect, 'quote'], $ids);
-
-        return $this->query("DELETE FROM $this->table WHERE id IN ".$this->arrayToWildCard($ids), $ids);
+        $ids = array_map(fn($value): int => (int)$value, $ids);
+        
+        return $this->query(
+            "DELETE FROM $this->table WHERE id IN ".$this->arrayToWildCard($ids),
+            $this->arrayValueParams($ids)
+        );
     }
 
     private function arrayToWildCard(array $param) : string

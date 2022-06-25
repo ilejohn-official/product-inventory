@@ -14,4 +14,6 @@ $route->get('/add', [$controller, 'showStoreForm']);
 
 $route->post('/add', [$controller, 'store']);
 
+$route->post('/delete', [$controller, 'delete']);
+
 return $route;

@@ -20,4 +20,9 @@ class ProductService implements ProductServiceInterface
     {
         return $this->product->store($params);
     }
+
+    public function deleteProducts(array $ids)
+    {
+        return $this->product->delete($ids);
+    }
 }
