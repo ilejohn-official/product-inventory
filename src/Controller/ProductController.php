@@ -17,10 +17,21 @@ class ProductController
   }
 
   public function show()
+  {  
+    require_once  __DIR__.'../../../view/products.view.html';
+  }
+
+  public function getProducts()
   {
     $products = $this->productService->getAllProducts();
-    
-    require_once  __DIR__.'../../../view/products.view.html';
+
+    header('Content-Type: application/json; charset=utf-8', TRUE, 200);
+    echo json_encode([
+      'status_code' => 200,
+      'status' => true,
+      'message' => 'Successful',
+      'data' => $products
+    ], JSON_PRESERVE_ZERO_FRACTION|JSON_FORCE_OBJECT);
   }
 
   public function showStoreForm()

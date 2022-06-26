@@ -10,9 +10,11 @@ $controller = $injector->make(ProductController::class);
 
 $route->get('/', [$controller, 'show']);
 
-$route->get('/add', [$controller, 'showStoreForm']);
+$route->get('/products', [$controller, 'getProducts']);
 
-$route->post('/add', [$controller, 'store']);
+$route->get('/add-product', [$controller, 'showStoreForm']);
+
+$route->post('/products', [$controller, 'store']);
 
 $route->post('/delete', [$controller, 'delete']);
 
