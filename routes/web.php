@@ -16,6 +16,6 @@ $route->get('/add-product', [$controller, 'showStoreForm']);
 
 $route->post('/products', [$controller, 'store']);
 
-$route->post('/delete', [$controller, 'delete']);
+$route->post('/delete-products', [$controller, 'delete']);
 
 return $route;

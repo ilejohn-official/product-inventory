@@ -4,6 +4,7 @@ namespace App\Routing;
 
 use App\Interface\RequestInterface;
 use App\Interface\RouteCollectionInterface;
+use App\Controller\ErrorController;
 
 class Router
 {
@@ -58,11 +59,13 @@ class Router
     }
 
     /**
-     * Retrun error page
+     * Retrun error page method
+     * 
+     * @return callable
      */
-    private function showErrorPage(): void
+    private function showErrorPage(): callable
     {
-        require_once  __DIR__.'../../../view/error.view.php';
+        return [ErrorController::class, 'showErrorPage'];
     }
     
     /**

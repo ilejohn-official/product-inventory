@@ -12,6 +12,8 @@ interface DatabaseInterface
 
     public function getAll();
 
+    public function exists(string $key, mixed $value);
+
     public function store(array $params);
 
     public function delete(array $params);

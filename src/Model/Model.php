@@ -21,6 +21,11 @@ abstract class Model
         return $this->db->getAll();
     }
 
+    public function exists(string $key, mixed $value) : bool
+    {
+        return $this->exists($key, $value);
+    }
+
     public function store(array $params)
     {
         return $this->db->store($params);

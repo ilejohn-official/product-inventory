@@ -11,9 +11,17 @@ class ProductService implements ProductServiceInterface
     {
     }
 
-    public function getAllProducts() 
+    public function getAllProducts() : array
     {
-        return $this->product->get();
+        $products = $this->product->get();
+
+        return array_map(
+            function ($item) {
+                $item->attribute = json_decode($item->attribute, true);
+                return $item;
+            }, 
+            $products
+        );
     }
 
     public function storeProduct(array $params)

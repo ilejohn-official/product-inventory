@@ -59,6 +59,13 @@ class MysqlDatabase implements DatabaseInterface
         return $this->query("SELECT * FROM $this->table");
     }
 
+    public function exists(string $key, mixed $value)
+    {
+       $result = $this->query("SELECT COUNT($key) as count FROM $this->table WHERE $key = ?", [$value]);
+
+       return $result[0]->count;
+    }
+
     public function store(array $param)
     {
         return $this->query(

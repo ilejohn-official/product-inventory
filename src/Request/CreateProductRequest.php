@@ -3,12 +3,13 @@
 namespace App\Request;
 
 use App\Trait\Validators;
+use App\Interface\DatabaseInterface;
 
 class CreateProductRequest extends Request
 {
    use Validators;
 
-   public function __construct()
+   public function __construct(private DatabaseInterface $db)
    {
        parent::__construct();
 
@@ -17,7 +18,8 @@ class CreateProductRequest extends Request
        $this->rules = [
            'required' => ['sku', 'name', 'price', 'attribute_key', 'attribute_value', 'attribute_unit'],
            'string' => ['sku', 'name', 'attribute_key', 'attribute_unit'],
-           'numeric' => ['price', 'attribute_value']
+           'numeric' => ['price', 'attribute_value'],
+           'unique' => ['sku:products']
        ];
 
    }
@@ -56,6 +58,7 @@ class CreateProductRequest extends Request
 
      $this->validateString();
      $this->validateNumber();
+     $this->validateUnique();
    }
 
    private function validateRequired() : void
@@ -86,6 +89,19 @@ class CreateProductRequest extends Request
        {
          if (!$this->numeric($this->data[$key])){
              $this->setError($key, "$key must be a valid number greater than 0");
+         }
+       }
+   }
+
+   private function validateUnique() : void
+   {
+
+      foreach($this->rules['unique'] as $key)
+       {
+          $extract = explode(':', $key);
+
+         if (!$this->unique($this->data, $extract[0], $extract[1], $this->db)){
+             $this->setError($extract[0], "$extract[0] must be unique");
          }
        }
    }

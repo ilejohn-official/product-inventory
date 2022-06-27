@@ -57,18 +57,7 @@ class ProductController
       ])
     ];
 
-    try {
-      $output = $this->productService->storeProduct($param);
-    } catch (\Throwable $th) {
-      header('Content-Type: application/json; charset=utf-8', TRUE, 406);
-      echo json_encode([
-        'status_code' => 406,
-        'status' => false,
-        'message' => strpos($th->getMessage(), 'Duplicate entry') ? 'Sku must be unique. choose another' : 'Failed',
-        'data' => null
-      ]);
-      die;
-    } 
+    $output = $this->productService->storeProduct($param);
 
     header('Content-Type: application/json; charset=utf-8', TRUE, 200);
     echo json_encode([

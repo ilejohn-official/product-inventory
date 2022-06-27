@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Trait;
-
+use App\Interface\DatabaseInterface;
 
 trait Validators
 {
@@ -63,6 +63,24 @@ trait Validators
     public function required($data, $key) : bool
     {
         return isset($data[$key]);
+    }
+
+     /**
+     * Checks if the value of the key exists already on the data store
+     * 
+     * @param array $data
+     * @param string $key
+     * @param string $table
+     * 
+     * @param App\Interface\DatabaseInterface
+     * 
+     * @return bool
+     */
+    public function unique($data, $key, $table, DatabaseInterface $db) : bool
+    {  
+       $db->setTable($table);
+
+       return $db->exists($key, $data[$key]) < 1;
     }
 
     /**

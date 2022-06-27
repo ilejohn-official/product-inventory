@@ -12,6 +12,8 @@ class DeleteProductRequest extends Request
    {
        parent::__construct();
 
+       $this->setBody(['ids' => json_decode($this->getBody()['ids'], true)]);
+
        $this->data = $this->getBody();
 
        $this->rules = [
