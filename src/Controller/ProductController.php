@@ -36,8 +36,7 @@ class ProductController
 
   public function showStoreForm()
   {
-    $add = 'This is where you add products to db';
-    require_once  __DIR__.'../../../view/add_products.view.php';
+    require_once  __DIR__.'../../../view/add_products.view.html';
   }
 
   public function store(CreateProductRequest $request)

@@ -4,41 +4,34 @@ createApp({
   data() {
     return {
       loading: true,
-      products: [],
       errorLoading: false,
-      massDeleteError: false,
+      addProductError: false,
       deleteErrorMessage: "",
+      productTypes: [
+        {value: 'dvd', text: 'DVD'},
+        {value: 'book', text: 'Book'},
+        {value: 'furniture', text: 'Furniture'},
+      ],
+      productType: "",
       form : {
-        ids : []
+        name: "",
+        sku: "",
+        price: 0.00,
+        attribute_key: "",
+        attribute_value: "",
+        attribute_unit: ""
       }
     }
   },
   mounted() {
-    this.getAllProducts();
+    this.loading = false
   },
   methods: {
-    getAllProducts(){
-      axios.get('/products')
-      .then((response) => {  
-        this.products = response.data.data;
-        this.loading = false; 
-      })
-      .catch( (error) => {
-        // handle error
-        this.errorLoading = true
-        console.log(error);
-      })
-    },
-    massDelete(){
-      if(this.form.ids.length < 1){
-        this.deleteErrorMessage = "You can only delete selected fields."
-        this.massDeleteError = true;
-        return;
-      }
+    addProduct(){
 
       axios({
         method: "post",
-        url: '/delete-products',
+        url: '/products',
         headers: { 
           "Content-Type": "multipart/form-data" 
         },
@@ -47,7 +40,6 @@ createApp({
       .then((response) => {  
         console.log(response);
         this.loading = true;
-        this.getAllProducts();
       })
       .catch( (error) => {
         console.log(error);
