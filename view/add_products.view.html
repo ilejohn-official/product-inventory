@@ -30,7 +30,7 @@
             <ul class="navbar-nav mr-auto">
             </ul>
             <div class="form-inline my-2 my-lg-0">
-              <button @submit.prevent="addProduct" class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" type="submit">Save</button>
+              <button @click="addProduct" class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" type="button">Save</button>
               <a href="/" class="btn btn-outline-primary my-2 my-sm-0" role="button" aria-pressed="true">Cancel</a>
             </div>
           </div>
@@ -58,71 +58,45 @@
             <div class="form-group row">
               <label for="sku" class="col-sm-2 col-form-label">SKU</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="sku" v-model.trim="form.sku" placeholder="SKU">
+                <input type="text" class="form-control" :class="{'is-invalid' : errors.sku }" id="sku" v-model.trim="form.sku">
+                <div class="invalid-feedback">
+                  {{errors.sku}}
+                </div>
               </div>
             </div>
             <div class="form-group row">
               <label for="name" class="col-sm-2 col-form-label">Name</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="name" v-model.trim="form.name" placeholder="Name">
+                <input type="text" class="form-control" :class="{'is-invalid' : errors.name }" id="name" v-model.trim="form.name">
+                <div class="invalid-feedback">
+                  {{errors.name}}
+                </div>
               </div>
             </div>
             <div class="form-group row">
                 <label for="price" class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-4">
-                  <input type="number" class="form-control" v-model="form.price" min="0.01" step="0.01" id="price" placeholder="Price">
+                  <input type="number" class="form-control" :class="{'is-invalid' : errors.amount }" v-model="form.amount" min="0.01" step="0.01" id="price">
+                  <div class="invalid-feedback">
+                    {{errors.amount}}
+                  </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="productType" class="col-sm-2 col-form-label">Type Switcher</label>
                 <div class="col-sm-4">
-                    <select id="productType" v-model="productType" class="form-control">
+                    <select name="productType" @change="clearAttribute($event)" id="productType" v-model="productType" class="form-control" :class="{'is-invalid' : errors.attribute_value }" >
                         <option disabled selected value="">Choose...</option>
-                        <option v-for="type in productTypes" :key="type.value" v-bind:value="type.value">{{ type.text }}</option>
+                        <option v-for="type in productTypes" :key="type.key" :value="type">{{ type.id }}</option>
                     </select>
+                    <div class="invalid-feedback">
+                      {{errors.attribute_value}}
+                    </div>
                 </div>
             </div>
-            <template v-if="productType==='dvd'">
-                <div class="form-group row" id="DVD">
-                    <label for="size" class="col-sm-2 col-form-label">Size (MB)</label>
-                    <div class="col-sm-4">
-                      <input type="text" class="form-control" id="size" v-model="form.attribute_value" placeholder="Size">
-                      <small><i>Please provide size in MB </i></small>
-                    </div>
-                </div>
-            </template>
-            <template v-if="productType==='book'">
-                <div class="form-group row" id="Book">
-                    <label for="size" class="col-sm-2 col-form-label">Weight (KG)</label>
-                    <div class="col-sm-4">
-                      <input type="text" class="form-control" id="size" v-model="form.attribute_value" placeholder="Size">
-                      <small><i>Please provide weight in KG </i></small>
-                    </div>
-                </div>
-            </template>
-            <template v-if="productType==='furniture'">
-                <div class="form-group row" id="Book">
-                    <label for="size" class="col-sm-2 col-form-label">Height (CM)</label>
-                    <div class="col-sm-4">
-                    <input type="text" class="form-control" id="size" v-model="form.attribute_value" placeholder="Size">
-                    </div>
-                </div>
-                <div class="form-group row" id="Book">
-                    <label for="size" class="col-sm-2 col-form-label">Width (CM)</label>
-                    <div class="col-sm-4">
-                    <input type="text" class="form-control" id="size" v-model="form.attribute_value" placeholder="Size">
-                    </div>
-                </div>
-                <div class="form-group row" id="Book">
-                    <label for="size" class="col-sm-2 col-form-label">Length (CM)</label>
-                    <div class="col-sm-4">
-                    <input type="text" class="form-control" id="size" v-model="form.attribute_value" placeholder="Size">
-                    <small><i>Please provide dimensions in HxWxL </i></small>
-                    </div>
-                </div>
-            </template>
+            <component :is="component[productType.id]"></component>
+            
         </form>
-        
 
         <hr>
         <div class="text-center">Scandiweb Test assignment</div>

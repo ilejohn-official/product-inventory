@@ -18,7 +18,7 @@ class CreateProductRequest extends Request
        $this->rules = [
            'required' => ['sku', 'name', 'price', 'attribute_key', 'attribute_value', 'attribute_unit'],
            'string' => ['sku', 'name', 'attribute_key', 'attribute_unit'],
-           'numeric' => ['price', 'attribute_value'],
+           'numeric' => ['price'],
            'unique' => ['sku:products']
        ];
 
@@ -85,12 +85,19 @@ class CreateProductRequest extends Request
 
    private function validateNumber() : void
    {
-    foreach($this->rules['numeric'] as $key)
-       {
-         if (!$this->numeric($this->data[$key])){
-             $this->setError($key, "$key must be a valid number greater than 0");
-         }
-       }
+    foreach($this->rules['numeric'] as $key){
+      if (!$this->numeric($this->data[$key])){
+        $this->setError($key, "$key must be a valid number greater than 0");
+      }
+    }
+
+    $attributeValues = explode('x', $this->data['attribute_value']);
+
+    foreach($attributeValues as $value){
+      if (!$this->numeric($value)){
+        $this->setError('attribute_value', "attribute_value unit(s) must be a valid number greater than 0");
+      }
+    }
    }
 
    private function validateUnique() : void
