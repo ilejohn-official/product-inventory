@@ -44,13 +44,11 @@ createApp({
         },
         data: {ids: JSON.stringify(this.form.ids)}, 
       })
-      .then((response) => {  
-        console.log(response);
+      .then(() => {
         this.loading = true;
         this.getAllProducts();
       })
-      .catch( (error) => {
-        console.log(error);
+      .catch( () => {
         this.deleteErrorMessage = "Something went wrong, try again later."
         this.massDeleteError = true;
       })

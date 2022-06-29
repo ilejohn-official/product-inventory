@@ -59,7 +59,7 @@ const Furniture = shallowRef({
       <div class="form-group row" >
         <label for="height" class="col-sm-2 col-form-label">Height (CM)</label>
         <div class="col-sm-4">
-        <input type="number" class="form-control" :class="{'is-invalid' : errors.height || errors.attribute }" id="height" min="0.01" step="0.01" v-model="form.attribute_value.height">
+        <input type="number" class="form-control" :class="{'is-invalid' : errors.height || (errors.attribute && !form.attribute_value.height) }" id="height" min="0.01" step="0.01" v-model="form.attribute_value.height">
         <div class="invalid-feedback">
             {{errors.height || errors.attribute}}
         </div>
@@ -68,7 +68,7 @@ const Furniture = shallowRef({
       <div class="form-group row">
         <label for="width" class="col-sm-2 col-form-label">Width (CM)</label>
         <div class="col-sm-4">
-        <input type="number" class="form-control" :class="{'is-invalid' : errors.width || errors.attribute }" id="width" min="0.01" step="0.01" v-model="form.attribute_value.width">
+        <input type="number" class="form-control" :class="{'is-invalid' : errors.width || (errors.attribute && !form.attribute_value.width) }" id="width" min="0.01" step="0.01" v-model="form.attribute_value.width">
         <div class="invalid-feedback">
             {{errors.width || errors.attribute}}
         </div>
@@ -77,7 +77,7 @@ const Furniture = shallowRef({
       <div class="form-group row">
         <label for="length" class="col-sm-2 col-form-label">Length (CM)</label>
         <div class="col-sm-4">
-        <input type="number" class="form-control" :class="{'is-invalid' : errors.lenght || errors.attribute }" id="length" min="0.01" step="0.01" v-model="form.attribute_value.lenght">
+        <input type="number" class="form-control" :class="{'is-invalid' : errors.lenght || (errors.attribute && !form.attribute_value.lenght) }" id="length" min="0.01" step="0.01" v-model="form.attribute_value.lenght">
         <div class="invalid-feedback">
             {{errors.lenght || errors.attribute}}
         </div>
@@ -98,9 +98,9 @@ createApp({
       addProductError: false,
       addProductErrorMessage: "",
       productTypes: [
-        {key: 'Size', unit: 'MB', id: 'DVD'},
-        {key: 'Weight', unit: 'KG', id: 'Book'},
-        {key: 'Dimension', unit: 'CM', id: 'Furniture'}
+        {key: 'Size', unit: 'MB', id: 'DVD', measureCount: 1},
+        {key: 'Weight', unit: 'KG', id: 'Book', measureCount: 1},
+        {key: 'Dimension', unit: 'CM', id: 'Furniture', measureCount: 3}
       ],
       productType: {},
       form : form,
@@ -130,10 +130,10 @@ createApp({
       if(this.objLength(this.productType) < 1){
         this.errors.attribute_value = "Product type is required"
       }
-      if (this.objLength(form.attribute_value) < 1) {
-        this.errors.attribute = `${Object.keys(this.productType).length > 0 ? this.productType.id+' '+this.productType.key : 'Product measure'} is required`
+      if (this.objLength(form.attribute_value) !== this.productType.measureCount) {
+        this.errors.attribute = `${this.objLength(this.productType) > 0 ? this.productType.id+' '+this.productType.key : 'Product measure'} is required`
       }
-      if (this.objLength(form.attribute_value) > 0) {
+      if (this.objLength(form.attribute_value) === this.productType.measureCount) {
         let object = form.attribute_value;
 
         for (const key in object) {
@@ -180,11 +180,10 @@ createApp({
         },
         data: form,
       })
-      .then((response) => {
+      .then(() => {
         window.location.href = '/';
       })
       .catch( (error) => {
-        console.log(error.response.data);
         const err = error.response.data.data;
         
         if (this.objLength(err) > 0){
@@ -197,10 +196,10 @@ createApp({
               this.errors[key] = '';
             }
           }, 5000);
+        } else {
+          this.addProductErrorMessage = "Something went wrong, try again later."
+          this.addProductError = true;
         }
-        
-        this.addProductErrorMessage = "Something went wrong, try again later."
-        this.addProductError = true;
       })
     }
   }
