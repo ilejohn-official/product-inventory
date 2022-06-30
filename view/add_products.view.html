@@ -14,92 +14,99 @@
         height: 0.5px;
         background-color: black;
       }
+      footer {
+        position:absolute;
+        bottom: 2%;
+        width: 90%
+      }
     </style>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
     <div class="container" id="app">
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mt-3">
-          <span class="navbar-brand">Product Add</span>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            </ul>
-            <div class="form-inline my-2 my-lg-0">
-              <button @click="addProduct" class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" type="button">Save</button>
-              <a href="/" class="btn btn-outline-primary my-2 my-sm-0" role="button" aria-pressed="true">Cancel</a>
-            </div>
-          </div>
-        </nav>
-
-        <div v-if="addProductError" class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
-          <strong>Error!</strong> {{addProductErrorMessage}}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-
-        <hr>
-  
-        <div v-if="loading" class="d-flex justify-content-center">
-          <div v-if="!errorLoading" class="d-flex spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-          <div v-else class="alert alert-primary" role="alert">
-            Some Error occured loading the page. Try refreshing
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mt-3">
+        <span class="navbar-brand">Product Add</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+          <div class="form-inline my-2 my-lg-0">
+            <button @click="addProduct" class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" type="button">Save</button>
+            <a href="/" class="btn btn-outline-danger my-2 my-sm-0" role="button" aria-pressed="true">Cancel</a>
           </div>
         </div>
+      </nav>
+      <hr>
+    </header>
+    <main>
+      <div v-if="addProductError" class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+        <strong>Error!</strong> {{addProductErrorMessage}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-        <form id="product_form">
-            <div class="form-group row">
-              <label for="sku" class="col-sm-2 col-form-label">SKU</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" :class="{'is-invalid' : errors.sku }" id="sku" v-model.trim="form.sku">
-                <div class="invalid-feedback">
-                  {{errors.sku}}
-                </div>
+      <div v-if="loading" class="d-flex justify-content-center">
+        <div v-if="!errorLoading" class="d-flex spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div v-else class="alert alert-primary" role="alert">
+          Some Error occured loading the page. Try refreshing
+        </div>
+      </div>
+
+      <form id="product_form">
+          <div class="form-group row">
+            <label for="sku" class="col-sm-2 col-form-label">SKU</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" :class="{'is-invalid' : errors.sku }" id="sku" v-model.trim="form.sku">
+              <div class="invalid-feedback">
+                {{errors.sku}}
               </div>
             </div>
-            <div class="form-group row">
-              <label for="name" class="col-sm-2 col-form-label">Name</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" :class="{'is-invalid' : errors.name }" id="name" v-model.trim="form.name">
-                <div class="invalid-feedback">
-                  {{errors.name}}
-                </div>
+          </div>
+          <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" :class="{'is-invalid' : errors.name }" id="name" v-model.trim="form.name">
+              <div class="invalid-feedback">
+                {{errors.name}}
               </div>
             </div>
-            <div class="form-group row">
-                <label for="price" class="col-sm-2 col-form-label">Price</label>
-                <div class="col-sm-4">
-                  <input type="number" class="form-control" :class="{'is-invalid' : errors.amount }" v-model="form.amount" min="0.01" step="0.01" id="price">
+          </div>
+          <div class="form-group row">
+              <label for="price" class="col-sm-2 col-form-label">Price ($)</label>
+              <div class="col-sm-4">
+                <input type="number" class="form-control" :class="{'is-invalid' : errors.amount }" v-model="form.amount" min="0.01" step="0.01" id="price">
+                <div class="invalid-feedback">
+                  {{errors.amount}}
+                </div>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label for="productType" class="col-sm-2 col-form-label">Type Switcher</label>
+              <div class="col-sm-4">
+                  <select name="productType" @change="clearAttribute($event)" id="productType" v-model="productType" class="form-control" :class="{'is-invalid' : errors.attribute_value }" >
+                      <option disabled selected value="">Choose...</option>
+                      <option v-for="type in productTypes" :key="type.key" :value="type">{{ type.id }}</option>
+                  </select>
                   <div class="invalid-feedback">
-                    {{errors.amount}}
+                    {{errors.attribute_value}}
                   </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="productType" class="col-sm-2 col-form-label">Type Switcher</label>
-                <div class="col-sm-4">
-                    <select name="productType" @change="clearAttribute($event)" id="productType" v-model="productType" class="form-control" :class="{'is-invalid' : errors.attribute_value }" >
-                        <option disabled selected value="">Choose...</option>
-                        <option v-for="type in productTypes" :key="type.key" :value="type">{{ type.id }}</option>
-                    </select>
-                    <div class="invalid-feedback">
-                      {{errors.attribute_value}}
-                    </div>
-                </div>
-            </div>
-            <component :is="component[productType.id]"></component>
-            
-        </form>
-
-        <hr>
-        <div class="text-center">Scandiweb Test assignment</div>
+              </div>
+          </div>
+          <component :is="component[productType.id]"></component>
+          
+      </form>
+    </main>
+    <footer>
+      <hr>
+      <div class="text-center">Scandiweb Test assignment</div>
+    </footer> 
     </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

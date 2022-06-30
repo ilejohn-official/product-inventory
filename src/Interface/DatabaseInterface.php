@@ -6,13 +6,13 @@ interface DatabaseInterface
 {
     public function connect();
 
-    public function setTable(string $table);
+    public function setTable(string $table) : void;
 
     public function query(string $query, array $params);
 
-    public function getAll();
+    public function getAll() : array;
 
-    public function exists(string $key, mixed $value);
+    public function exists(string $key, mixed $value) : int;
 
     public function store(array $params);
 

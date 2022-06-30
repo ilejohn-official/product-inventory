@@ -14,19 +14,23 @@ class RouteCollection implements RouteCollectionInterface
         $this->routes = [];
     }
 
+    /**
+     * Get routes
+     * @return array
+     */
     public function getRoutes() : array
     {
         return $this->routes;
     }
 
-     /**
-     * SET route
-     *
-     * @param string $httpMethod
-     * @param string $uri
-     * @param callable $controllerMethod
-     * @return void
-     */
+    /**
+    * SET route
+    *
+    * @param string $httpMethod
+    * @param string $uri
+    * @param callable $controllerMethod
+    * @return void
+    */
 
     private function registerRoute(string $httpMethod, string $uri, callable $controllerMethod) : void
     {
@@ -35,14 +39,14 @@ class RouteCollection implements RouteCollectionInterface
         }
     }
 
-     /**
-     * store route
-     *
-     * @param string $httpMethod
-     * @param string $uri
-     * @param callable $controllerMethod
-     * @return void
-     */
+    /**
+    * Store route
+    *
+    * @param string $httpMethod
+    * @param string $uri
+    * @param callable $controllerMethod
+    * @return void
+    */
     private function storeRoute($httpMethod, $uri, $controllerMethod) : void
     {
         array_push($this->routes, [
@@ -53,7 +57,7 @@ class RouteCollection implements RouteCollectionInterface
     }
 
     /**
-     * validate route params
+     * Validate route params
      *
      * @param string $httpMethod
      * @param string $uri
@@ -63,9 +67,11 @@ class RouteCollection implements RouteCollectionInterface
 
     private function validRouteParams(string $httpMethod, string $uri, callable $controllerMethod) : bool
     {
-        $key = array_search(true, array_map(function($item) use ($uri, $httpMethod){
-            return $item['path'] === $uri && $item['httpMethod'] === $httpMethod;
-         }, $this->routes)
+        $key = array_search(
+            true,
+            array_map(function ($item) use ($uri, $httpMethod) {
+                return $item['path'] === $uri && $item['httpMethod'] === $httpMethod;
+            }, $this->routes)
         );
 
         return in_array($httpMethod, $this->acceptedRequestMethods) &&  is_callable($controllerMethod) && $key === false;

@@ -6,76 +6,72 @@ use App\Trait\Validators;
 
 class DeleteProductRequest extends Request
 {
-   use Validators;
+    use Validators;
 
-   public function __construct()
-   {
-       parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-       $this->setBody(['ids' => json_decode($this->getBody()['ids'], true)]);
+        $this->setBody(['ids' => json_decode($this->getBody()['ids'], true)]);
 
-       $this->data = $this->getBody();
+        $this->data = $this->getBody();
 
-       $this->rules = [
+        $this->rules = [
            'required' => ['ids'],
            'array_of_integers' => ['ids'],
        ];
+    }
 
-   }
+    public function getValidated() : array
+    {
+        return $this->getBody();
+    }
 
-   public function getValidated() : array
-   {
-       return $this->getBody();
-   }
+    public function validate() : mixed
+    {
+        $this->validateBody();
 
-   public function validate()
-   {
-       $this->validateBody();
-
-       if ($this->hasErrors){
-        header('Content-Type: application/json; charset=utf-8', TRUE, 406);
-         echo json_encode([
-            'status_code' => 406,
-            'status' => false,
-            'message' => 'Error',
-            'data' => $this->getError()
-          ]);
-          die;
-       }
-   }
+        if ($this->hasErrors) {
+            header('Content-Type: application/json; charset=utf-8', true, 406);
+            echo json_encode([
+                    'status_code' => 406,
+                    'status' => false,
+                    'message' => 'Error',
+                    'data' => $this->getError()
+                 ]);
+            die;
+        }
+    }
 
 
-   public function validateBody() : void
-   {
-     $this->validateRequired();
+    public function validateBody() : void
+    {
+        $this->validateRequired();
 
-     if ($this->hasErrors){
-        return;
-     }
+        if ($this->hasErrors) {
+            return;
+        }
 
-     $this->validateIsArrayOfNumbers();
-   }
+        $this->validateIsArrayOfNumbers();
+    }
 
    
 
-   private function validateRequired() : void
-   {
-       foreach($this->rules['required'] as $key)
-       {
-         if (!$this->required($this->data, $key)){
-             $this->setError($key, "$key is required");
-         }
-       }
-   }
-
-   private function validateIsArrayOfNumbers() : void
-   {
-    foreach($this->rules['array_of_integers'] as $key)
-     {
-        if (!$this->array_of_integers($this->data[$key])){
-            $this->setError($key, "$key must be an array of integer ids");
+    private function validateRequired() : void
+    {
+        foreach ($this->rules['required'] as $key) {
+            if (!$this->required($this->data, $key)) {
+                $this->setError($key, "$key is required");
+            }
         }
     }
-   }
 
+    private function validateIsArrayOfNumbers() : void
+    {
+        foreach ($this->rules['array_of_integers'] as $key) {
+            if (!$this->array_of_integers($this->data[$key])) {
+                $this->setError($key, "$key must be an array of integer ids");
+            }
+        }
+    }
 }

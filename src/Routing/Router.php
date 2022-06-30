@@ -8,10 +8,8 @@ use App\Controller\ErrorController;
 
 class Router
 {
-
     public function __construct(private RequestInterface $request)
     {
-
     }
 
     /**
@@ -24,15 +22,17 @@ class Router
         $routeCollection = $routes->getRoutes();
 
         try {
-            $key = array_search(true, array_map(function($item){
-                return ( 
-                    $item['path'] == $this->requestPath() && 
+            $key = array_search(
+                true,
+                array_map(function ($item) {
+                    return (
+                    $item['path'] == $this->requestPath() &&
                     $item['httpMethod'] == $this->requestMethod()
                 );
-             }, $routeCollection)
+                }, $routeCollection)
             );
 
-            if($key === false) {
+            if ($key === false) {
                 http_response_code(404);
                 header("HTTP/1.0 404 Not Found");
                 
@@ -40,7 +40,6 @@ class Router
             }
             
             return $routeCollection[$key]['callable'];
-            
         } catch (\Throwable $th) {
             //throw $th;
             return $this->showErrorPage();
@@ -60,7 +59,7 @@ class Router
 
     /**
      * Retrun error page method
-     * 
+     *
      * @return callable
      */
     private function showErrorPage(): callable

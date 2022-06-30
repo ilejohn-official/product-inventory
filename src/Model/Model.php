@@ -6,22 +6,36 @@ use App\Interface\DatabaseInterface;
 
 abstract class Model
 {
+    /**
+     * @param DatabaseInterface $db
+     *
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
         $this->db->setTable(self::getTableName());
     }
 
-    public static final function getTableName()
+    /**
+     * @return string
+     */
+    final public static function getTableName() : string
     {
         return static::$table;
     }
 
-    public function get() 
+    /**
+     * @return array
+     */
+    public function get() : array
     {
         return $this->db->getAll();
     }
 
-    public function exists(string $key, mixed $value) : bool
+    /**
+     * @return int
+     */
+    public function exists(string $key, mixed $value) : int
     {
         return $this->exists($key, $value);
     }
