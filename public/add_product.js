@@ -1,12 +1,7 @@
 const {shallowRef, createApp} = Vue
 let form = {
-  // name: "",
-  // sku: "",
-  // price: 0.00,
-  // attribute_key: "",
    productType: {},
-   attributeValue: {},
-  // attribute_unit: ""
+   attributeValue: {}
 }
 
 let errors = {}
@@ -145,9 +140,6 @@ createApp({
         }
       }
       
-    },
-    parseAttribute(object){
-      return Object.values(object).join('x')
     },
     hasErrors(){
       return this.objLength(this.errors) > 0

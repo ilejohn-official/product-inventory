@@ -3,10 +3,11 @@
 namespace App\Request;
 
 use App\Trait\Validators;
+use App\Trait\Response;
 
 class DeleteProductRequest extends Request
 {
-    use Validators;
+    use Validators, Response;
 
     public function __construct()
     {
@@ -32,14 +33,16 @@ class DeleteProductRequest extends Request
         $this->validateBody();
 
         if ($this->hasError()) {
-            header('Content-Type: application/json; charset=utf-8', true, 406);
-            echo json_encode([
-                    'status_code' => 406,
-                    'status' => false,
-                    'message' => 'Error',
-                    'data' => $this->getError()
-                 ]);
-            die;
+            $this->json(
+                [
+                'status_code' => 406,
+                'status' => false,
+                'message' => 'Error',
+                'data' => $this->getError()
+            ],
+                0,
+                406
+            );
         }
     }
 

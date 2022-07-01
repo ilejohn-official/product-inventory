@@ -4,10 +4,11 @@ namespace App\Request;
 
 use App\Trait\Validators;
 use App\Interface\DatabaseInterface;
+use App\Trait\Response;
 
 class CreateProductRequest extends Request
 {
-    use Validators;
+    use Validators, Response;
 
     public function __construct(private DatabaseInterface $db)
     {
@@ -40,14 +41,16 @@ class CreateProductRequest extends Request
         $this->validateBody();
 
         if ($this->hasError()) {
-            header('Content-Type: application/json; charset=utf-8', true, 406);
-            echo json_encode([
+            $this->json(
+                [
                 'status_code' => 406,
                 'status' => false,
                 'message' => 'Error',
                 'data' => $this->getError()
-            ]);
-            die;
+            ],
+                0,
+                406
+            );
         }
     }
 

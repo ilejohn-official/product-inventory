@@ -6,24 +6,26 @@ use App\Interface\RequestInterface;
 use App\Interface\ProductServiceInterface;
 use App\Request\CreateProductRequest;
 use App\Request\DeleteProductRequest;
+use App\Trait\Response;
 
 class ProductController
 {
+    use Response;
+
     public function __construct(private ProductServiceInterface $productService)
     {
     }
 
     public function show()
     {
-        require_once  __DIR__.'../../../view/products.view.html';
+        $this->view('products.view.html');
     }
 
     public function getProducts()
     {
         $products = $this->productService->getAllProducts();
 
-        header('Content-Type: application/json; charset=utf-8', true, 200);
-        echo json_encode([
+        $this->json([
           'status_code' => 200,
           'status' => true,
           'message' => 'Successful',
@@ -33,7 +35,7 @@ class ProductController
 
     public function showStoreForm()
     {
-        require_once  __DIR__.'../../../view/add_products.view.html';
+        $this->view('add_products.view.html');
     }
 
     public function store(CreateProductRequest $request)
@@ -42,8 +44,7 @@ class ProductController
 
         $output = $this->productService->storeProduct($request->getValidated());
 
-        header('Content-Type: application/json; charset=utf-8', true, 200);
-        echo json_encode([
+        $this->json([
           'status_code' => 200,
           'status' => true,
           'message' => 'Successful',
@@ -57,8 +58,7 @@ class ProductController
 
         $this->productService->deleteProducts($request->getValidated());
 
-        header('Content-Type: application/json; charset=utf-8', true, 200);
-        echo json_encode([
+        $this->json([
           'status_code' => 200,
           'status' => true,
           'message' => 'Successful',
