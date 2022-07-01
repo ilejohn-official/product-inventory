@@ -14,7 +14,7 @@
         }
     },
     "require": {
-        "php": ">=7",
+        "php": ">= 7.4",
         "vlucas/phpdotenv": "^5.4",
         "yiisoft/di": "^1.0",
         "yiisoft/injector": "^1.0"
