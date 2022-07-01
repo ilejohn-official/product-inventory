@@ -13,11 +13,15 @@ class CreateProductRequest extends Request
     {
         parent::__construct();
 
-        $this->data = $this->getBody();
+        $this->setBody(array_replace($this->getBody(), [
+            'attributeValue' =>  json_decode($this->getBody()['attributeValue'], true)
+        ]));
 
+        $this->data = $this->getBody();
+       
         $this->rules = [
-           'required' => ['sku', 'name', 'price', 'attribute_key', 'attribute_value', 'attribute_unit'],
-           'string' => ['sku', 'name', 'attribute_key', 'attribute_unit'],
+           'required' => ['sku', 'name', 'price', 'attributeValue'],
+           'string' => ['sku', 'name'],
            'numeric' => ['price'],
            'unique' => ['sku:products']
        ];
@@ -26,16 +30,16 @@ class CreateProductRequest extends Request
     public function getValidated() : array
     {
         return array_map(
-            fn ($value) => is_numeric($value) ? $value : trim(htmlentities($value)),
+            fn ($value) => is_numeric($value) || is_array($value) ? $value : trim(htmlentities($value)),
             $this->getBody()
         );
     }
 
-    public function validate() : mixed
+    public function validate()
     {
         $this->validateBody();
 
-        if ($this->hasErrors) {
+        if ($this->hasError()) {
             header('Content-Type: application/json; charset=utf-8', true, 406);
             echo json_encode([
                 'status_code' => 406,
@@ -52,7 +56,7 @@ class CreateProductRequest extends Request
     {
         $this->validateRequired();
 
-        if ($this->hasErrors) {
+        if ($this->hasError()) {
             return;
         }
 
@@ -74,7 +78,7 @@ class CreateProductRequest extends Request
     private function validateString() : void
     {
         foreach ($this->rules['string'] as $key) {
-            $min = $key == 'attribute_unit' ? 2 : 3;
+            $min = 3;
             $max = 150;
             if (!$this->string($this->data[$key], $max, $min)) {
                 $this->setError($key, "$key must be a string between $min and $max chars");
@@ -104,21 +108,13 @@ class CreateProductRequest extends Request
 
     private function validateAttribute() : void
     {
-        $pair = [
-            'Size' => 3,
-            'Weight' => 1,
-            'Dimension' => 1
-        ];
-
-        $attributeValues = explode('x', $this->data['attribute_value']);
-
-        if (count($attributeValues) < $pair[$this->data['attribute_key']]) {
-            $this->setError('attribute_value', "attribute_value unit(s) required");
+        if (count($this->data['attributeValue']) < $this->data['productType_measureCount']) {
+            $this->setError('attributeValue', "attributeValue unit(s) required");
         }
 
-        foreach ($attributeValues as $value) {
+        foreach ($this->data['attributeValue'] as $value) {
             if (!$this->numeric($value)) {
-                $this->setError('attribute_value', "attribute_value unit(s) must be a valid number greater than 0");
+                $this->setError('attributeValue', "attributeValue unit(s) must be a valid number greater than 0");
             }
         }
     }

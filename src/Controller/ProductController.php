@@ -40,20 +40,7 @@ class ProductController
     {
         $request->validate();
 
-        $body = $request->getValidated();
-
-        $param = [
-          'sku' => $body['sku'],
-          'name' => $body['name'],
-          'price' => $body['price'],
-          'attribute' => json_encode([
-            'key' => $body['attribute_key'],
-            'value' => $body['attribute_value'],
-            'unit' => $body['attribute_unit']
-          ])
-        ];
-
-        $output = $this->productService->storeProduct($param);
+        $output = $this->productService->storeProduct($request->getValidated());
 
         header('Content-Type: application/json; charset=utf-8', true, 200);
         echo json_encode([
@@ -68,9 +55,7 @@ class ProductController
     {
         $request->validate();
 
-        $body = $request->getValidated();
-
-        $this->productService->deleteProducts($body['ids']);
+        $this->productService->deleteProducts($request->getValidated());
 
         header('Content-Type: application/json; charset=utf-8', true, 200);
         echo json_encode([

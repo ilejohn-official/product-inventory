@@ -19,18 +19,28 @@ class ProductService implements ProductServiceInterface
             function ($item) {
                 $item->attribute = json_decode($item->attribute, true);
                 return $item;
-            }, 
+            },
             $products
         );
     }
 
     public function storeProduct(array $params)
     {
-        return $this->product->store($params);
+        $this->product->sku = $params['sku'];
+        $this->product->name = $params['name'];
+        $this->product->price = $params['price'];
+
+        $this->product->attribute = json_encode([
+            'key' => $params['productType_key'],
+            'value' => implode('x', $params['attributeValue']),
+            'unit' => $params['productType_unit']
+        ]);
+          
+        return $this->product->store();
     }
 
-    public function deleteProducts(array $ids)
+    public function deleteProducts(array $params)
     {
-        return $this->product->delete($ids);
+        return $this->product->delete($params['ids']);
     }
 }

@@ -81,25 +81,25 @@
           <div class="form-group row">
               <label for="price" class="col-sm-2 col-form-label">Price ($)</label>
               <div class="col-sm-4">
-                <input type="number" class="form-control" :class="{'is-invalid' : errors.amount }" v-model="form.amount" min="0.01" step="0.01" id="price">
+                <input type="number" class="form-control" :class="{'is-invalid' : errors.price }" v-model="form.price" min="0.01" step="0.01" id="price">
                 <div class="invalid-feedback">
-                  {{errors.amount}}
+                  {{errors.price}}
                 </div>
               </div>
           </div>
           <div class="form-group row">
               <label for="productType" class="col-sm-2 col-form-label">Type Switcher</label>
               <div class="col-sm-4">
-                  <select name="productType" @change="clearAttribute($event)" id="productType" v-model="productType" class="form-control" :class="{'is-invalid' : errors.attribute_value }" >
+                  <select name="productType" @change="clearAttribute($event)" id="productType" v-model="form.productType" class="form-control" :class="{'is-invalid' : errors.attributeValue }" >
                       <option disabled selected value="">Choose...</option>
                       <option v-for="type in productTypes" :key="type.key" :value="type">{{ type.id }}</option>
                   </select>
                   <div class="invalid-feedback">
-                    {{errors.attribute_value}}
+                    {{errors.attributeValue}}
                   </div>
               </div>
           </div>
-          <component :is="component[productType.id]"></component>
+          <component :is="component[form.productType.id]"></component>
           
       </form>
     </main>

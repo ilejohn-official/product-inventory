@@ -48,7 +48,7 @@ createApp({
         this.loading = true;
         this.getAllProducts();
       })
-      .catch( () => {
+      .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
         this.massDeleteError = true;
       })

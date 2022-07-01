@@ -27,11 +27,11 @@ class DeleteProductRequest extends Request
         return $this->getBody();
     }
 
-    public function validate() : mixed
+    public function validate()
     {
         $this->validateBody();
 
-        if ($this->hasErrors) {
+        if ($this->hasError()) {
             header('Content-Type: application/json; charset=utf-8', true, 406);
             echo json_encode([
                     'status_code' => 406,
@@ -48,7 +48,7 @@ class DeleteProductRequest extends Request
     {
         $this->validateRequired();
 
-        if ($this->hasErrors) {
+        if ($this->hasError()) {
             return;
         }
 

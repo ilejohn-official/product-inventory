@@ -11,8 +11,6 @@ trait Validators
     private array $errors = [];
  
     private array $rules;
- 
-    private bool $hasErrors = false;
 
     /**
      * check if errors exist
