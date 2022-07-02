@@ -55,13 +55,11 @@ createApp({
         data: {ids: JSON.stringify(this.form.ids)}, 
       })
       .then(() => {
+        window.location.href = '/';
       })
       .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
         this.massDeleteError = true;
-      })
-      .finally(() => {
-        this.getAllProducts();
       })
     }
   }
