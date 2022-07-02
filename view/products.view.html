@@ -54,14 +54,15 @@
           </div>
         </template>
 
-        <div class="row mt-5" v-if="Object.keys(products).length">
+        <div class="row mt-5" v-if="hasProducts">
           <div v-for="product in products" :key="product.id" class="col-sm-3">
             <div class="card mb-3">
               <div class="card-body">
   
                 <div class="form-check">
                   <input 
-                   class="form-check-input delete-checkbox" 
+                   class="form-check-input"
+                   :class="{ 'delete-checkbox' : hasProducts }"
                    type="checkbox" 
                    v-model="form.ids"
                    :value="product.id"

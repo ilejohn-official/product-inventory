@@ -11,6 +11,11 @@ createApp({
       }
     }
   },
+  computed: {
+    hasProducts(){
+      return Object.keys(this.products).length > 0
+    }
+  },
   mounted() {
     this.getAllProducts();
   },
@@ -26,14 +31,14 @@ createApp({
       })
     },
     massDelete(){
-      if(this.form.ids.length < 1){
-        this.deleteErrorMessage = "You can only delete selected fields."
-        this.massDeleteError = true;
-        setTimeout(() => {
-          this.massDeleteError = false;
-        },3000)
-        return;
-      }
+      // if(this.form.ids.length < 1){
+      //   this.deleteErrorMessage = "You can only delete selected fields."
+      //   this.massDeleteError = true;
+      //   setTimeout(() => {
+      //     this.massDeleteError = false;
+      //   },3000)
+      //   return;
+      // }
 
       for (const product in this.products){
         if (Object.values(this.form.ids).includes(this.products[product].id)){
