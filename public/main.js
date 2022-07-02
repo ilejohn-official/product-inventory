@@ -59,12 +59,12 @@ createApp({
 
       let checkboxes = document.getElementsByClassName('delete-checkbox');
       for (var i = checkboxes.length; i--;) {
-        if(checkboxes[i].checked === true){
-          checkboxes[i].remove()
+        if(checkboxes[i].checked){
+          checkboxes[i].parentNode.removeChild(checkboxes[i])
         }
       }
 
-//window.location.href = '/';
+
 
       axios({
         method: "post",
@@ -75,6 +75,7 @@ createApp({
         data: {ids: JSON.stringify(ids)}, 
       })
       .then(() => {
+        window.location.href = '/';
       })
       .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
