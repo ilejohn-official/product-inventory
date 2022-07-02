@@ -49,3 +49,8 @@ This is a simple product inventory application built with plain php and Vue 3( w
   ```
   php -S localhost:8000
   ```
+
+  | Route        | Function               |
+  | ------------ | ---------------------- |
+  | /            | Show product list page |
+  | /add-product | Page to add products   |
