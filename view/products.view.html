@@ -36,7 +36,7 @@
             </ul>
             <div class="form-inline my-2 my-lg-0">
               <a href="/add-product" class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" role="button" aria-pressed="true">ADD</a>
-              <button @click="massDelete" id="delete-product-btn" class="btn btn-outline-danger my-2 my-sm-0" type="submit">MASS DELETE</button>
+              <button @click="massDelete" id="delete-product-btn" class="btn btn-outline-danger my-2 my-sm-0" type="button">MASS DELETE</button>
             </div>
           </div>
         </nav>
@@ -68,7 +68,7 @@
                    :value="product.id"
                    :id="`checkbox${product.id}`"
                   >
-                  <label class="form-check-label delete-checkbox" :for="`checkbox${product.id}`"></label>
+                  <label class="form-check-label" :for="`checkbox${product.id}`"></label>
                 </div>
   
                 <p class="card-text text-center">{{product.sku}}</p>
