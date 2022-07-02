@@ -7,7 +7,5 @@ $sql = "CREATE TABLE `products` (
     `price` decimal(10,0) NOT NULL,
     `attribute` json NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `sku` (`sku`)
+    UNIQUE KEY (`sku`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
-
-  

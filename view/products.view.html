@@ -54,7 +54,7 @@
           </div>
         </template>
 
-        <div class="row mt-5" >
+        <div class="row mt-5" v-if="Object.keys(products).length">
           <div v-for="product in products" :key="product.id" class="col-sm-3">
             <div class="card mb-3">
               <div class="card-body">
@@ -71,10 +71,13 @@
                 <p class="card-text text-center">{{product.sku}}</p>
                 <p class="card-text text-center">{{product.name}}</p>
                 <p class="card-text text-center">${{product.price}}</p>
-                <p class="card-text text-center">{{`${product.attribute.key} : ${product.attribute.value} ${product.attribute.unit}`}} </p>
+                <p class="card-text text-center">{{`${product.attribute.key} : ${product.attribute.value} ${product.attribute.unit !== 'CM' ? product.attribute.unit : ''}`}} </p>
               </div>
             </div>
           </div>
+        </div>
+        <div v-else>
+          <p class="text-center text-muted font-italic">No products added. Click add to add products</p>
         </div>
       </main>
 

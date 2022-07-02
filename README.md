@@ -35,10 +35,9 @@ This is a simple product inventory application built with plain php and Vue 3( w
   composer install
   ```
 
-- Copy and paste the content of the .env.example file into a new file named .env in the same directory as the former and set it's  
-  values based on your environment's configuration.
+- Copy and paste the content of the .env.example file into a new file named .env in the same directory as the former and set it's values based on your environment's configuration.
 
-- Create a table using the query in [/config/migration.php](https://github.com/ilejohn-official/product-inventory/blob/master/config/migration.php)
+- Create a table using the query in [/config/migration.php](https://github.com/ilejohn-official/product-inventory/blob/master/config/migration.php). Ensure to use a Mysql table that supports json field.
 
 ## Usage
 
@@ -50,7 +49,7 @@ This is a simple product inventory application built with plain php and Vue 3( w
   php -S localhost:8000
   ```
 
-  | Route        | Function               |
+  | Routes       | Function               |
   | ------------ | ---------------------- |
   | /            | Show product list page |
   | /add-product | Page to add products   |
