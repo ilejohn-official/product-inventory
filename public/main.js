@@ -35,6 +35,12 @@ createApp({
         return;
       }
 
+      for (const product in this.products){
+        if (Object.values(this.form.ids).includes(this.products[product].id)){
+          delete this.products[product]
+        }
+      }
+
       axios({
         method: "post",
         url: '/delete-products',
@@ -44,11 +50,13 @@ createApp({
         data: {ids: JSON.stringify(this.form.ids)}, 
       })
       .then(() => {
-        this.getAllProducts();
       })
       .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
         this.massDeleteError = true;
+      })
+      .finally(() => {
+        this.getAllProducts();
       })
     }
   }
