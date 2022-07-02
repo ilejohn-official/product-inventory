@@ -43,11 +43,11 @@ createApp({
 
       let ids = [];
 
-      let checkboxes = document.getElementsByClassName('delete-checkbox');
-      for (var i = checkboxes.length; i--;) {
-        if(checkboxes[i].checked === true){
-          ids.push(Number(checkboxes[i].value))
-          checkboxes[i].remove()
+      let boxes = document.querySelectorAll("input.delete-checkbox")
+      for (let i = 0; i < boxes.length; i++) {
+        if(boxes[i].checked === true){
+          ids.push(Number(boxes[i].value))
+          boxes[i].remove()
         }
       }
 
@@ -56,6 +56,15 @@ createApp({
           delete this.products[product]
         }
       }
+
+      let checkboxes = document.getElementsByClassName('delete-checkbox');
+      for (var i = checkboxes.length; i--;) {
+        if(checkboxes[i].checked === true){
+          checkboxes[i].remove()
+        }
+      }
+
+//window.location.href = '/';
 
       axios({
         method: "post",
