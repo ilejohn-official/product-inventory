@@ -1,13 +1,14 @@
-const {createApp} = Vue
+const {ref, createApp} = Vue
 
 createApp({
   data() {
+    let ids = ref([]);
     return {
       products: [],
       massDeleteError: false,
       deleteErrorMessage: "",
       form : {
-        ids : []
+        ids : ids
       }
     }
   },
@@ -31,14 +32,23 @@ createApp({
       })
     },
     massDelete(){
-      // if(this.form.ids.length < 1){
-      //   this.deleteErrorMessage = "You can only delete selected fields."
-      //   this.massDeleteError = true;
-      //   setTimeout(() => {
-      //     this.massDeleteError = false;
-      //   },3000)
-      //   return;
-      // }
+      if(this.form.ids.length < 1){
+        this.deleteErrorMessage = "You can only delete selected fields."
+        this.massDeleteError = true;
+        setTimeout(() => {
+          this.massDeleteError = false;
+        },3000)
+        return;
+      }
+
+      let checkboxes = document.getElementsByClassName('delete-checkbox');
+
+      let ids = [];
+      for (i=0; i<checkboxes.length;i++){
+       if(checkboxes[i].checked===true) {
+        ids.push(Number(checkboxes[i].value))
+       }
+      }
 
       for (const product in this.products){
         if (Object.values(this.form.ids).includes(this.products[product].id)){
@@ -52,14 +62,16 @@ createApp({
         headers: { 
           "Content-Type": "multipart/form-data" 
         },
-        data: {ids: JSON.stringify(this.form.ids)}, 
+        data: {ids: JSON.stringify(ids)}, 
       })
       .then(() => {
-        window.location.href = '/';
       })
       .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
         this.massDeleteError = true;
+      })
+      .finally(() =>{
+        this.getAllProducts();
       })
     }
   }
