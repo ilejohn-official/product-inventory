@@ -41,17 +41,18 @@ createApp({
         return;
       }
 
-      let checkboxes = document.getElementsByClassName('delete-checkbox');
-
       let ids = [];
-      for (i=0; i<checkboxes.length;i++){
-       if(checkboxes[i].checked===true) {
-        ids.push(Number(checkboxes[i].value))
-       }
+
+      let checkboxes = document.getElementsByClassName('delete-checkbox');
+      for (var i = checkboxes.length; i--;) {
+        if(checkboxes[i].checked === true){
+          ids.push(Number(checkboxes[i].value))
+          checkboxes[i].remove()
+        }
       }
 
       for (const product in this.products){
-        if (Object.values(this.form.ids).includes(this.products[product].id)){
+        if (ids.includes(this.products[product].id)){
           delete this.products[product]
         }
       }
