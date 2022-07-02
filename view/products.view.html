@@ -53,7 +53,7 @@
             </button>
           </div>
         </template>
-
+        <!-- :class="{ 'delete-checkbox' : hasProducts }" -->
         <div class="row mt-5" v-if="hasProducts">
           <div v-for="product in products" :key="product.id" class="col-sm-3">
             <div class="card mb-3">
@@ -62,11 +62,13 @@
                 <div class="form-check">
                   <input 
                    class="form-check-input"
-                   :class="{ 'delete-checkbox' : hasProducts }"
-                   type="checkbox" 
+                   
+                   type="checkbox"
                    v-model="form.ids"
                    :value="product.id"
+                   :id="`checkbox${product.id}`"
                   >
+                  <label class="form-check-label delete-checkbox" :for="`checkbox${product.id}`"></label>
                 </div>
   
                 <p class="card-text text-center">{{product.sku}}</p>
