@@ -113,17 +113,17 @@ createApp({
         this.errors.price = "Price must be a valid number greater than 0"
       }
       if(!form.name || form.name.length < 2){
-        this.errors.name = "Name is required"
+        this.errors.name = "Please, submit required data: Name is required"
       }
       if(!form.sku || form.sku.length < 2){
-        this.errors.sku = "SKU is required"
+        this.errors.sku = "Please, submit required data: SKU is required"
       }
       if(this.objLength(form.productType) < 1){
-        this.errors.attributeValue = "Product type is required"
+        this.errors.attributeValue = "Please, submit required data: Product type is required"
       }
 
       if (this.objLength(form.attributeValue) !== form.productType.measureCount) {
-        this.errors.attribute = `${this.objLength(form.productType) > 0 ? form.productType.id+' '+form.productType.key : 'Product measure'} is required`
+        this.errors.attribute = `Please, submit required data: ${this.objLength(form.productType) > 0 ? form.productType.id+' '+form.productType.key : 'Product measure'} is required`
       }
       if (this.objLength(form.attributeValue) === form.productType.measureCount) {
         let object = form.attributeValue;
