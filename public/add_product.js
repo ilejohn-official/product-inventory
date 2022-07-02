@@ -90,8 +90,6 @@ createApp({
       component: {
         DVD,Book,Furniture
       },
-      loading: true,
-      errorLoading: false,
       addProductError: false,
       addProductErrorMessage: "",
       productTypes: [
@@ -102,9 +100,6 @@ createApp({
       form : form,
       errors : errors
     }
-  },
-  mounted() {
-    this.loading = false
   },
   methods: {
     clearAttribute(event){

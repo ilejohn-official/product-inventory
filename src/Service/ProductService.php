@@ -17,7 +17,12 @@ class ProductService implements ProductServiceInterface
 
         return array_map(
             function ($item) {
+                $item->id = $item->id;
+                $item->sku = $item->sku;
+                $item->name = $item->name;
+                $item->price = $item->price;
                 $item->attribute = json_decode($item->attribute, true);
+                
                 return $item;
             },
             $products
