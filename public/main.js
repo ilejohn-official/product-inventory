@@ -18,14 +18,7 @@ createApp({
     }
   },
   mounted() {
-    this.getAllProducts();
-    // let checkboxes = document.getElementsByClassName('delete-checkbox');
-    //         for (i=0; i<checkboxes.length;i++){
-    //             checkboxes[i].checked=true;
-    //         }
-
-    //   $('#delete-product-btn').trigger('click')
-   
+    this.getAllProducts(); 
   },
   methods: {
     getAllProducts(){
@@ -37,15 +30,6 @@ createApp({
         // handle error
         console.log(error);
       })
-    },
-    massDel(){
-      setTimeout(() => {
-        let checkboxes = document.getElementsByClassName('delete-checkbox');
-        for (i=0; i<checkboxes.length;i++){
-            checkboxes[i].checked=true;
-        }
-      this.massDelete()
-      },2000)
     },
     massDelete(){
       // if(this.form.ids.length < 1){
@@ -89,6 +73,7 @@ createApp({
       })
       .then(() => {
         //window.location.href = '/';
+        this.getAllProducts();
       })
       .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
