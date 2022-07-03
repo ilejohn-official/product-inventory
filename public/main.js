@@ -64,7 +64,7 @@ createApp({
         }
       }
 
-
+      document.getElementById(`checkbox${ids[0]}`).style.display="none";
 
       axios({
         method: "post",
@@ -75,7 +75,7 @@ createApp({
         data: {ids: JSON.stringify(ids)}, 
       })
       .then(() => {
-        window.location.href = '/';
+        //window.location.href = '/';
       })
       .catch(() => {
         this.deleteErrorMessage = "Something went wrong, try again later."
