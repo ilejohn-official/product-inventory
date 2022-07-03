@@ -59,7 +59,9 @@ createApp({
 
       let checkboxes = document.getElementsByClassName('delete-checkbox');
       for (var i = checkboxes.length; i--;) {
+        if(checkboxes[i].checked === true){
           checkboxes[i].parentNode.removeChild(checkboxes[i])
+        }
       }
 
       axios({
