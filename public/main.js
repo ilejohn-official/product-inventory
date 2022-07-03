@@ -19,6 +19,13 @@ createApp({
   },
   mounted() {
     this.getAllProducts();
+    // let checkboxes = document.getElementsByClassName('delete-checkbox');
+    //         for (i=0; i<checkboxes.length;i++){
+    //             checkboxes[i].checked=true;
+    //         }
+
+    //   $('#delete-product-btn').trigger('click')
+   
   },
   methods: {
     getAllProducts(){
@@ -31,26 +38,34 @@ createApp({
         console.log(error);
       })
     },
+    massDel(){
+      setTimeout(() => {
+        let checkboxes = document.getElementsByClassName('delete-checkbox');
+        for (i=0; i<checkboxes.length;i++){
+            checkboxes[i].checked=true;
+        }
+      this.massDelete()
+      },2000)
+    },
     massDelete(){
-      if(this.form.ids.length < 1){
-        this.deleteErrorMessage = "You can only delete selected fields."
-        this.massDeleteError = true;
-        setTimeout(() => {
-          this.massDeleteError = false;
-        },3000)
-        return;
-      }
+      // if(this.form.ids.length < 1){
+      //   this.deleteErrorMessage = "You can only delete selected fields."
+      //   this.massDeleteError = true;
+      //   setTimeout(() => {
+      //     this.massDeleteError = false;
+      //   },3000)
+      //   return;
+      // }
 
       let ids = [];
-
+      
       let boxes = document.querySelectorAll("input.delete-checkbox")
       for (let i = 0; i < boxes.length; i++) {
         if(boxes[i].checked === true){
           ids.push(Number(boxes[i].value))
-          boxes[i].remove()
         }
       }
-
+      
       for (const product in this.products){
         if (ids.includes(this.products[product].id)){
           delete this.products[product]
